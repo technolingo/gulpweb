@@ -1,4 +1,7 @@
 var gulp = require('gulp');
+var uglifyjs = require('uglify-js');
+var composer = require('gulp-uglify/composer');
+var minify = composer(uglifyjs, console);
 
 // Styles
 gulp.task('styles', function () {
@@ -8,6 +11,10 @@ gulp.task('styles', function () {
 // Scripts
 gulp.task('scripts', function () {
     console.log('Starting "scripts" task.');
+
+    return gulp.src('public/scripts/*.js')
+        .pipe(minify())
+        .pipe(gulp.dest('public/dist'));
 });
 
 // Images

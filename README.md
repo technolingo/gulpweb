@@ -1,1 +1,1 @@
-Gulp Task Runner Exercises.
+Common Web Development Automations Implemented with Gulp.js
