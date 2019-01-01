@@ -8,7 +8,9 @@
   },
   "author": "Zilong",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "static-server": "^2.0.0"
+  },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-uglify": "^3.0.1"
