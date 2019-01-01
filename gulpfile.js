@@ -5,6 +5,7 @@ var minifyJs = composer(uglifyjs, console);
 var livereload = require('gulp-livereload');
 var concat = require('gulp-concat');
 var minifyCss = require('gulp-minify-css');
+var autoprefixer = require('gulp-autoprefixer');
 
 // File paths
 var DIST_PATH = 'public/dist';
@@ -17,6 +18,7 @@ gulp.task('styles', function () {
 
   // make sure reset.css comes first
   return gulp.src(['public/css/reset.css', CSS_PATH])
+    .pipe(autoprefixer()) // config ex. {browsers: ['last 2 versions', 'ie 8']}
     .pipe(concat('styles.css'))
     .pipe(minifyCss())
     .pipe(gulp.dest(DIST_PATH))
