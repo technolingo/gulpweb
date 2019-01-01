@@ -4,6 +4,7 @@ body {
     justify-content: center;
     flex-direction: column;
     height: 100vh;
+    background: #F7F7F7;
 }
 
 img {

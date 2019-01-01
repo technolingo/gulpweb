@@ -1,9 +1,10 @@
 var gulp = require('gulp');
 var uglifyjs = require('uglify-js');
 var composer = require('gulp-uglify/composer');
-var minify = composer(uglifyjs, console);
+var minifyJs = composer(uglifyjs, console);
 var livereload = require('gulp-livereload');
 var concat = require('gulp-concat');
+var minifyCss = require('gulp-minify-css');
 
 // File paths
 var DIST_PATH = 'public/dist';
@@ -17,6 +18,7 @@ gulp.task('styles', function () {
   // make sure reset.css comes first
   return gulp.src(['public/css/reset.css', CSS_PATH])
     .pipe(concat('styles.css'))
+    .pipe(minifyCss())
     .pipe(gulp.dest(DIST_PATH))
     .pipe(livereload());
 });
@@ -26,7 +28,7 @@ gulp.task('scripts', function () {
   console.log('Starting "scripts" task.');
 
   return gulp.src(SCRIPTS_PATH)
-    .pipe(minify())
+    .pipe(minifyJs())
     .pipe(gulp.dest(DIST_PATH))
     .pipe(livereload());
 });
@@ -47,6 +49,7 @@ gulp.task('watch', function () {
   require('./server.js');
   livereload.listen();
   gulp.watch(SCRIPTS_PATH, ['scripts']);
+  gulp.watch(CSS_PATH, ['styles']);
 });
 
 // Gulp 4 example - done is necessary to signal async completion
