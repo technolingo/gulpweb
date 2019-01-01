@@ -2,6 +2,9 @@ var gulp = require('gulp');
 var uglifyjs = require('uglify-js');
 var composer = require('gulp-uglify/composer');
 var minify = composer(uglifyjs, console);
+var livereload = require('gulp-livereload');
+
+// File paths
 var SCRIPTS_PATH = 'public/scripts/**/*.js';
 
 // Styles
@@ -15,7 +18,8 @@ gulp.task('scripts', function () {
 
   return gulp.src(SCRIPTS_PATH)
     .pipe(minify())
-    .pipe(gulp.dest('public/dist'));
+    .pipe(gulp.dest('public/dist'))
+    .pipe(livereload());
 });
 
 // Images
@@ -32,6 +36,7 @@ gulp.task('default', function () {
 gulp.task('watch', function () {
   console.log('Starting watch task.');
   require('./server.js');
+  livereload.listen();
   gulp.watch(SCRIPTS_PATH, ['scripts']);
 });
 

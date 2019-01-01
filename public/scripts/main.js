@@ -1,3 +1,3 @@
-var name = 'Zilong Li';
+var name = 'Zilong';
 
 document.write('Hello ' + name + '!');
