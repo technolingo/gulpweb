@@ -68,6 +68,7 @@ gulp.task('scripts', function () {
       this.emit('end');
     })) // error handling
     .pipe(minifyJs())
+    .pipe(concat('scripts.js'))
     .pipe(gulp.dest(DIST_PATH))
     .pipe(livereload());
 });
