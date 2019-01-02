@@ -11,6 +11,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 var sourceMaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
+var babel = require('gulp-babel');
 
 sass.compiler = require('node-sass');
 
@@ -68,6 +69,9 @@ gulp.task('scripts', function () {
       this.emit('end');
     })) // error handling
     .pipe(sourceMaps.init())
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
     .pipe(minifyJs())
     .pipe(concat('scripts.js'))
     .pipe(sourceMaps.write())
