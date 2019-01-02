@@ -13,12 +13,20 @@ var sourceMaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
 
+// Handlebars plugins
+var handlebars = require('gulp-handlebars');
+var handlebarsLib = require('handlebars');
+var declare = require('gulp-declare');
+var wrap = require('gulp-wrap');
+
 sass.compiler = require('node-sass');
 
 // File paths
 var DIST_PATH = 'public/dist';
 var SCRIPTS_PATH = 'public/scripts/**/*.js';
 var CSS_PATH = 'public/css/**/*.css';
+var SCSS_PATH = 'public/scss/**/*.scss';
+var TEMPLATES_PATH = 'public/templates/**/*.hbs';
 
 // // CSS Styles
 // gulp.task('styles', function () {
@@ -84,6 +92,23 @@ gulp.task('images', function () {
   console.log('Starting "images" task.');
 });
 
+// Templates
+gulp.task('templates', function () {
+  console.log('Starting "templates" task.');
+  return gulp.src(TEMPLATES_PATH)
+    .pipe(handlebars({
+      handlebars: handlebarsLib
+    }))
+    .pipe(wrap('Handlebars.template(<%= contents %>)'))
+    .pipe(declare({
+      namespace: 'templates',
+      noRedeclare: true
+    }))
+    .pipe(concat('templates.js'))
+    .pipe(gulp.dest(DIST_PATH))
+    .pipe(livereload());
+});
+
 // Default
 gulp.task('default', function () {
   console.log('Starting "default" task.');
@@ -96,7 +121,8 @@ gulp.task('watch', function () {
   livereload.listen();
   gulp.watch(SCRIPTS_PATH, ['scripts']);
   // gulp.watch(CSS_PATH, ['styles']);
-  gulp.watch('public/scss/**/*.scss', ['styles']);
+  gulp.watch(SCSS_PATH, ['styles']);
+  gulp.watch(TEMPLATES_PATH, ['templates']);
 });
 
 // Gulp 4 example - done is necessary to signal async completion

@@ -8,5 +8,8 @@ class Person {
 }
 
 const person = new Person('Zilong');
+const greetHTML = templates['greeting']({
+  message: person.greet()
+});
 
-document.write(person.greet());
+document.write(greetHTML);
