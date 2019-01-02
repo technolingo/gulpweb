@@ -67,8 +67,10 @@ gulp.task('scripts', function () {
       console.log(e);
       this.emit('end');
     })) // error handling
+    .pipe(sourceMaps.init())
     .pipe(minifyJs())
     .pipe(concat('scripts.js'))
+    .pipe(sourceMaps.write())
     .pipe(gulp.dest(DIST_PATH))
     .pipe(livereload());
 });
