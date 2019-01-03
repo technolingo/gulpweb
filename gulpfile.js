@@ -95,7 +95,19 @@ gulp.task('scripts', function () {
 gulp.task('images', function () {
   console.log('Starting "images" task.');
   return gulp.src(IMAGES_PATH)
-    .pipe(imageMin())
+    .pipe(imageMin([
+      imageMin.gifsicle({ interlaced: true }),
+      imageMin.jpegtran({ progressive: true }),
+      imageMin.optipng({ optimizationLevel: 5 }),
+      imageMin.svgo({
+        plugins: [
+          { removeViewBox: true },
+          { cleanupIDs: false }
+        ]
+      }),
+      pngQuant(),
+      jpegRecompress()
+    ]))
     .pipe(gulp.dest(DIST_PATH + '/images'));
 });
 
