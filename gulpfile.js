@@ -13,13 +13,18 @@ var sourceMaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
 
+sass.compiler = require('node-sass');
+
 // Handlebars plugins
 var handlebars = require('gulp-handlebars');
 var handlebarsLib = require('handlebars');
 var declare = require('gulp-declare');
 var wrap = require('gulp-wrap');
 
-sass.compiler = require('node-sass');
+// Image compression
+var imageMin = require('gulp-imagemin');
+var pngQuant = require('imagemin-pngquant');
+var jpegRecompress = require('imagemin-jpeg-recompress');
 
 // File paths
 var DIST_PATH = 'public/dist';
@@ -27,6 +32,7 @@ var SCRIPTS_PATH = 'public/scripts/**/*.js';
 var CSS_PATH = 'public/css/**/*.css';
 var SCSS_PATH = 'public/scss/**/*.scss';
 var TEMPLATES_PATH = 'public/templates/**/*.hbs';
+var IMAGES_PATH = 'public/images/**/*.{png,jpeg,jpg,svg,gif}';
 
 // // CSS Styles
 // gulp.task('styles', function () {
@@ -51,7 +57,6 @@ var TEMPLATES_PATH = 'public/templates/**/*.hbs';
 // SCSS Styles
 gulp.task('styles', function () {
   console.log('Starting "styles" task.');
-
   return gulp.src('public/scss/styles.scss')
     .pipe(plumber(function (e) {
       console.log('Styles Task Error');
@@ -69,13 +74,12 @@ gulp.task('styles', function () {
 // Scripts
 gulp.task('scripts', function () {
   console.log('Starting "scripts" task.');
-
   return gulp.src(SCRIPTS_PATH)
     .pipe(plumber(function (e) {
       console.log('Scripts Task Error');
       console.log(e);
       this.emit('end');
-    })) // error handling
+    }))
     .pipe(sourceMaps.init())
     .pipe(babel({
       presets: ['@babel/env']
@@ -90,6 +94,9 @@ gulp.task('scripts', function () {
 // Images
 gulp.task('images', function () {
   console.log('Starting "images" task.');
+  return gulp.src(IMAGES_PATH)
+    .pipe(imageMin())
+    .pipe(gulp.dest(DIST_PATH + '/images'));
 });
 
 // Templates
