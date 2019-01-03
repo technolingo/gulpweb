@@ -12,6 +12,7 @@ var plumber = require('gulp-plumber');
 var sourceMaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
+var del = require('del');
 
 sass.compiler = require('node-sass');
 
@@ -128,8 +129,16 @@ gulp.task('templates', function () {
     .pipe(livereload());
 });
 
+// Clean-up redundant files
+gulp.task('clean', function () {
+  return del.sync([
+    // a list of files or directories to delete
+    DIST_PATH
+  ]);
+});
+
 // Default
-gulp.task('default', ['images', 'templates', 'styles', 'scripts'], function () {
+gulp.task('default', ['clean', 'images', 'templates', 'styles', 'scripts'], function () {
   console.log('Starting "default" task.');
 });
 
