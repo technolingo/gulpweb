@@ -13,6 +13,7 @@ var sourceMaps = require('gulp-sourcemaps');
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
 var del = require('del');
+var zip = require('gulp-zip');
 
 sass.compiler = require('node-sass');
 
@@ -140,6 +141,13 @@ gulp.task('clean', function () {
 // Default
 gulp.task('default', ['clean', 'images', 'templates', 'styles', 'scripts'], function () {
   console.log('Starting "default" task.');
+});
+
+// Export public/ as zip
+gulp.task('export', ['clean'], function () {
+  return gulp.src('public/**/*')
+    .pipe(zip('website.zip'))
+    .pipe(gulp.dest('./'));
 });
 
 // Watch
