@@ -1,19 +1,23 @@
 'use strict';
 
 var gulp = require('gulp');
+
+var livereload = require('gulp-livereload');
+var plumber = require('gulp-plumber');
+var del = require('del');
+var zip = require('gulp-zip');
+
 var uglifyjs = require('uglify-js');
 var composer = require('gulp-uglify/composer');
 var minifyJs = composer(uglifyjs, console);
-var livereload = require('gulp-livereload');
+
 var concat = require('gulp-concat');
-var minifyCss = require('gulp-minify-css');
+// var minifyCss = require('gulp-minify-css');
 var autoprefixer = require('gulp-autoprefixer');
-var plumber = require('gulp-plumber');
 var sourceMaps = require('gulp-sourcemaps');
+
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
-var del = require('del');
-var zip = require('gulp-zip');
 
 sass.compiler = require('node-sass');
 
@@ -31,15 +35,13 @@ var jpegRecompress = require('imagemin-jpeg-recompress');
 // File paths
 var DIST_PATH = 'public/dist';
 var SCRIPTS_PATH = 'public/scripts/**/*.js';
-var CSS_PATH = 'public/css/**/*.css';
+// var CSS_PATH = 'public/css/**/*.css';
 var SCSS_PATH = 'public/scss/**/*.scss';
 var TEMPLATES_PATH = 'public/templates/**/*.hbs';
 var IMAGES_PATH = 'public/images/**/*.{png,jpeg,jpg,svg,gif}';
 
 // // CSS Styles
 // gulp.task('styles', function () {
-//   console.log('Starting "styles" task.');
-
 //   // make sure reset.css comes first
 //   return gulp.src(['public/css/reset.css', CSS_PATH])
 //     .pipe(plumber(function (e) {
@@ -58,7 +60,6 @@ var IMAGES_PATH = 'public/images/**/*.{png,jpeg,jpg,svg,gif}';
 
 // SCSS Styles
 gulp.task('styles', function () {
-  console.log('Starting "styles" task.');
   return gulp.src('public/scss/styles.scss')
     .pipe(plumber(function (e) {
       console.log('Styles Task Error');
@@ -75,7 +76,6 @@ gulp.task('styles', function () {
 
 // Scripts
 gulp.task('scripts', function () {
-  console.log('Starting "scripts" task.');
   return gulp.src(SCRIPTS_PATH)
     .pipe(plumber(function (e) {
       console.log('Scripts Task Error');
@@ -95,7 +95,6 @@ gulp.task('scripts', function () {
 
 // Images
 gulp.task('images', function () {
-  console.log('Starting "images" task.');
   return gulp.src(IMAGES_PATH)
     .pipe(imageMin([
       imageMin.gifsicle({ interlaced: true }),
@@ -115,7 +114,6 @@ gulp.task('images', function () {
 
 // Templates
 gulp.task('templates', function () {
-  console.log('Starting "templates" task.');
   return gulp.src(TEMPLATES_PATH)
     .pipe(handlebars({
       handlebars: handlebarsLib
@@ -152,7 +150,6 @@ gulp.task('export', ['clean'], function () {
 
 // Watch
 gulp.task('watch', ['default'], function () {
-  console.log('Starting watch task.');
   require('./server.js');
   livereload.listen();
   gulp.watch(SCRIPTS_PATH, ['scripts']);
@@ -163,7 +160,6 @@ gulp.task('watch', ['default'], function () {
 
 // Gulp 4 example - done is necessary to signal async completion
 // gulp.task('watch', function ( done ) {
-//   console.log('Starting watch task');
 //   gulp.watch( SCRIPTS_PATH, gulp.series('scripts') );
 //   done();
 // });
